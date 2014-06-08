@@ -23,121 +23,63 @@ public class main {
 		pages.remove(pages.last());		
 		int numPages = Integer.parseInt(pages.last().html());
 		
+		//Construct URL for crawling all reviews of a product.
 		String pageURL = URL+"?pageNumber=";
 		
-		List<Review> reviews = new ArrayList<Review>();
-		
+		//Create DB connection.
 		DB db = new DB();
 		
 		for(int i = 1 ; i <= numPages; i++){
+			
 			Document page = Jsoup.connect(pageURL+i).get();
+			
+			//get only the reviews.
 			Element htmlReviews = page.getElementById("productReviews");
 			Elements children = htmlReviews.select("td > div");
+			
+			//ITerate over each review
 			Iterator<Element> iter = children.iterator();
 			while(iter.hasNext()){
 				Review review = new Review();
-//				System.out.println("START!"+System.getProperty("line.separator"));
 				
 				Element currentDiv = iter.next();
+				
+				//Annoying bug fix for when a manufacuter comments on a review.
 				if( !currentDiv.attr("style").equals("margin-left: 5px;")){
+					
+					//Get info from the spans.
 					Elements spans = currentDiv.getElementsByTag("span");
 					if(spans.size() > 0){
 						String stars = spans.get(2).html();
 						stars = stars.substring(0, stars.indexOf( ' ' ));
-	//					System.out.println("Review given: "+stars);
 						review.setStars(stars);
 		
 						String headline = spans.get(3).getElementsByTag("b").first().html();
-	//					System.out.println("HL: "+headline);
 						review.setHeadline(headline);
 						
 						String date = spans.get(3).getElementsByTag("nobr").first().html();
-	//					System.out.println("Date: "+date);
 						review.setDate(date);
 					}
 					
+					//Get info from a tags.
 					Elements hrefs = currentDiv.getElementsByTag("a");
 					if(hrefs.size() > 0 ){
 						String userId = hrefs.first().attr("href");
-	//					System.out.println("UserId: "+userId.substring(userId.lastIndexOf('/')+1));
 						userId = userId.substring(userId.lastIndexOf('/')+1);
 						review.setUserId(userId);
 					}
+					
+					//get the review
 					String reviewText = currentDiv.getElementsByClass("reviewText").first().html();
-	//				System.out.println("Review: "+review);
 					review.setReview(reviewText);
 					
+					//add to db
 					db.addReview(review);
 				}else{
+					//skip the manufacturer response
 					iter.next();
 				}
-//				System.out.println(System.getProperty("line.separator")+"STOP"+System.getProperty("line.separator"));
 			}
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-//		
-//		Element htmlReviews = doc.getElementById("productReviews");
-//		Elements children = htmlReviews.select("td > div");
-//		Iterator<Element> iter = children.iterator();
-//		while(iter.hasNext()){
-//			Review review = new Review();
-////			System.out.println("START!"+System.getProperty("line.separator"));
-//			
-//			Element currentDiv = iter.next();
-//			
-//			Elements spans = currentDiv.getElementsByTag("span");
-//			if(spans.size() > 0){
-//				String stars = spans.get(2).html();
-//				stars = stars.substring(0, stars.indexOf( ' ' ));
-////				System.out.println("Review given: "+stars);
-//				review.setStars(stars);
-//				
-//				String headline = spans.get(3).getElementsByTag("b").first().html();
-////				System.out.println("HL: "+headline);
-//				review.setHeadline(headline);
-//				
-//				String date = spans.get(3).getElementsByTag("nobr").first().html();
-////				System.out.println("Date: "+date);
-//				review.setDate(date);
-//			}
-//			
-//			Elements hrefs = currentDiv.getElementsByTag("a");
-//			if(hrefs.size() > 0 ){
-//				String userId = hrefs.first().attr("href");
-//				userId = userId.substring(userId.lastIndexOf('/')+1);
-////				System.out.println("UserId: "+userId);
-//				review.setUserId(userId);
-//			}
-//			
-//			String reviewText = currentDiv.getElementsByClass("reviewText").first().html();
-////			System.out.println("Review: "+reviewText);
-//			review.setReview(reviewText);
-//			
-//			db.addReview(review);
-////			System.out.println(review.toString());
-////			System.out.println(System.getProperty("line.separator")+"STOP"+System.getProperty("line.separator"));
-//		}
-		
-		
-		
-		
-		
 	}
 }

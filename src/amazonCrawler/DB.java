@@ -25,9 +25,7 @@ public class DB {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
+		
 	public void addReview(Review review){
 		String query = "INSERT INTO reviews (review, stars, headline, date, user_id) VALUES (?,?,?,?,?)";
 		System.out.println(query);
@@ -47,22 +45,6 @@ public class DB {
 			e.printStackTrace();
 			System.exit(0);
 		}
-//		try{
-//			this.runSql2(query);
-//		}catch(Exception e){
-//			e.printStackTrace();
-//			System.exit(0);
-//		}
-	}
- 
-	public ResultSet runSql(String sql) throws SQLException {
-		Statement sta = conn.createStatement();
-		return sta.executeQuery(sql);
-	}
- 
-	public boolean runSql2(String sql) throws SQLException {
-		Statement sta = conn.createStatement();
-		return sta.execute(sql);
 	}
  
 	@Override
