@@ -8,6 +8,7 @@ public class Review {
 	private String userId;
 	private Date date;
 	private String headline;
+	private String productId;
 	
 	public void setReview(String rev){
 		this.review = rev;
@@ -16,9 +17,13 @@ public class Review {
 	public void setStars(String strs){
 		this.stars = Float.parseFloat(strs);
 	}
-	
+
 	public void setUserId(String id){
 		this.userId = id;
+	}
+	
+	public void setProductId(String id){
+		this.productId = id;
 	}
 	
 	public void setDate(String dt){
@@ -36,9 +41,13 @@ public class Review {
 	public String getHeadline(){
 		return this.headline;
 	}
-	
+
 	public String getUserId(){
 		return this.userId;
+	}
+	
+	public String getProductId(){
+		return this.productId;
 	}
 	
 	public Date getDate(){

@@ -27,7 +27,7 @@ public class DB {
 	}
 		
 	public void addReview(Review review){
-		String query = "INSERT INTO reviews (review, stars, headline, date, user_id) VALUES (?,?,?,?,?)";
+		String query = "INSERT INTO reviews (review, stars, headline, date, user_id, product_id) VALUES (?,?,?,?,?,?)";
 		System.out.println(query);
 		
 		PreparedStatement prepState = null;
@@ -39,6 +39,7 @@ public class DB {
 			prepState.setString(3, review.getHeadline());
 			prepState.setDate(4, new java.sql.Date( review.getDate().getTime() ));
 			prepState.setString(5, review.getUserId());
+			prepState.setString(6, review.getProductId());
 			prepState.executeUpdate();
 		}catch(Exception e){
 			System.out.println(review.getUserId());

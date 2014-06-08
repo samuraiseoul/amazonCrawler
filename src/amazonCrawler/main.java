@@ -14,8 +14,8 @@ import org.jsoup.select.Elements;
 public class main {
 
 	public static void main(String[] args) throws IOException{
-		String URL = "http://www.amazon.com/Tide-Laundry-Detergent-Spring-Meadow/product-reviews/B004YHKVCM/";
-
+		String URL = "http://www.amazon.com/Angel-Soft-Double-Rolls-Total/product-reviews/B009EQ3MBK";
+		String productId = URL.substring(URL.lastIndexOf('/')+1);
 		int numPages = getNumPages(URL);
 		
 		//Construct URL for crawling all reviews of a product.
@@ -33,6 +33,7 @@ public class main {
 			
 			while(iter.hasNext()){
 				Review review = new Review();
+				review.setProductId(productId);
 				
 				Element currentDiv = iter.next();
 				
